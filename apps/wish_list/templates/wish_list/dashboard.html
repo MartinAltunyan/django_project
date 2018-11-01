@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+    <style>
+        #customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+.logout {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+}
+
+    </style>
+</head>
+<body>
+    <h1> Welcome, {{login_user.first_name}}! </h1>
+    <p class="logout"><a href="/logout" >Logout</a></p>
+
+<h3>Your Wish List :</h3>
+
+
+
+
+
+    <table id="customers">
+        <tr>
+
+            <th>Item</th>
+            <th>Added by</th>
+            <th>Date Added</th>
+    
+            <th>Action</th>
+        </tr>
+        {% for list in wishlists  %}
+        <tr>
+            <td><a href="/wish_items/{{list.id}}"> {{list.name}}</a></td>
+            <td>{{list.user.first_name}}</td>
+            <td>{{list.created_at}}</td>
+          
+      
+            
+            <td>
+                <form action="/removefromlist" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value='Remove From myy Wishlist'>
+                    <input type="hidden" name='productid' value="{{list.id}}">
+                </form>
+            </td>
+        </tr>
+    {{allnames.id}}
+        {% endfor %}
+  
+  
+  
+    </table>
+
+<!-- LIST OF OTHER USERS NOT ON YOU FRIEND LSIT -->
+    <h3>OTHER Users' Wish List </h3>
+    <table id="customers">
+        <tr>
+    
+            <th>Item</th>
+            <th>Added by</th>
+            <th>Date Added</th>
+    
+            <th>Action</th>
+        </tr>
+        {% for product in products  %}
+        <tr>
+            <td>{{product.name}}</td>
+            <td>{{product.user.first_name}}</td>
+            <td>{{product.created_at}}</td>
+          
+      
+            
+            <td>
+                <form action="/addwishlist" method="POST">
+                    {% csrf_token %}
+                    <input type="submit" value='Add to my Wishlist'>
+                    <input type="hidden" name='productid' value="{{product.id}}">
+                </form>
+            </td>
+        </tr>
+    {{allnames.id}}
+        {% endfor %}
+  
+  
+  
+    </table>
+    <p><a href="/wish_items/create">Add Item</a></p>
+</body>
+</html>
